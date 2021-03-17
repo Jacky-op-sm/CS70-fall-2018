@@ -1,0 +1,322 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{xcolor}
+
+\setlength{\parindent}{0pt}
+
+\newcommand{\red}{\color{red}}
+
+
+\title{CS70 HW2}
+\date{February 22, 2021}
+
+\begin{document}
+\maketitle
+\section{Hit or Miss?}
+
+\begin{parts}
+\part 
+Incorrect. What the proof proves is that for all positive integer $ n \in \mathbb{R}, n^2 >= n$, but the claim is to prove for any positive number $\in \mathbb{R}$.
+
+For a counter-example, when $n = 0.5, n^2 = 0.25, n = 0.5$, thus $n^2 < n$. 
+
+\part
+Correct.
+
+\part
+Incorrect. From the reference to the Well Ordering Principle, the first counter-example is when $n = 0$, where $0 < a, b <= n \implies a = 1, b = 0$, and we don't know  whether $2 * 1 = 0$ or not.
+
+
+\end{parts}
+
+\section{A Coin Game}
+Proof by Strong Induction on the total coin number N.
+
+\emph{Base Case}: when $N = 2$, which can only split into 1 and 1. Thus $1 * 1 = {2 * (2 - 1) \over {2}} = 1$.
+
+\emph{Induction Hypothese}: Assume total score will be ${n * (n - 1)} \over {2}$ when $2 <= n <= k$ no matter how to split;
+
+\emph{Induction Step}: We must show when $n = k + 1$, the equation still holds. Say we split the stack into $a$ and $b$ parts where $a + b = k + 1, a \in \mathbb{R}, b \in \mathbb{R}$. Use induction hypothesis on these two parts, we gain the equation
+
+\begin{equation*}
+\frac{a * (a - 1)}{2} + \frac{b * (b - 1)}{2} + a * b = \frac{(a + b) ^ 2 - (a + b)}{2} = \frac{(k + 1) * k}{2}
+\end{equation*}
+
+and since $a \in \mathbb{R}, b \in \mathbb{R}$, so proof is done.
+
+\section{Grid Induction}
+Claim: Pacman needs i + j steps to reach (0, 0).
+
+Proof by induction on the sum of its coordinates $ N =  i + j$.
+
+\emph{Base Case}: when $N = 0 \implies i = 0, j = 0$, which takes no step to reach (0, 0);
+
+\emph{Induction Hypothesis}: Assume pacman at (i, j) needs exactly $N = i + j = k$ steps to reach origin.
+
+\emph{Induction Step}: when N = k + 1, there are two cases:
+
+\begin{parts}
+
+	\part Pacman walks one step down if allowed. Thus the new sum $N' = k$, by induction hypothesis, the total step is $1 + k$. 
+
+	\part Pacman walks one step left if allowed. Thus the new sum $N' = k$, by induction hypothesis, the total step is $1 + k$. 
+
+\end{parts}
+
+In both cases, the total steps needed are $k + 1$, so the proof is done.
+
+\section{Stable Merriage}
+
+\begin{parts}
+
+	\part 
+	\begin{tabular}{ccccc}
+	day 1 & day 2 & day 3 & day 4 & day 5 \\
+	\begin{tabular}{ |c|c| } 
+ \hline
+ women & men \\\hline 
+ 1 & A, B, C  \\\hline 
+ 2 &  \\\hline
+ 3 & D \\\hline 
+ 4 &  \\\hline
+\end{tabular} &
+
+\begin{tabular}{ |c|c| } 
+ \hline
+ women &  \\\hline 
+ 1 &  A\\\hline 
+ 2 &  \\\hline
+ 3 &  D, B, C\\\hline 
+ 4 &  \\\hline
+\end{tabular} &
+
+\begin{tabular}{ |c|c| } 
+ \hline
+ women &  \\\hline 
+ 1 &  A, D\\\hline 
+ 2 &  C\\\hline
+ 3 &  B\\\hline 
+ 4 &  \\\hline
+\end{tabular} &
+
+\begin{tabular}{ |c|c| } 
+ \hline
+ women &  \\\hline 
+ 1 &  D\\\hline 
+ 2 &  A, C\\\hline
+ 3 &  B\\\hline 
+ 4 &  \\\hline
+\end{tabular} &
+
+\begin{tabular}{ |c|c| } 
+ \hline
+ women &  \\\hline 
+ 1 &  D\\\hline 
+ 2 &  A\\\hline
+ 3 &  B\\\hline 
+ 4 &  C\\\hline
+\end{tabular}
+
+\end{tabular}
+
+So the final result is \{(D, 1), (A, 2), (B, 3), (C, 4)\};
+
+	\part The proof consists of two parts : First is to prove it's stable and section is to prove it puts out a male-optimal pairing.
+	
+	\begin{parts}
+	
+		\part Stability.\\
+		Say there is a rough couple in the result produced by this Algorithm, namely in (W, M*) and (W-, M), W and M are rough couple.
+		
+		By the definition of rough couple, for M: W > W-; for W: M > M*. Since M proposes, he proposes to W earlier than W-. But W ends up with M*, so for W: M* > M, which contradicts the earlier fact.
+		
+		So it's stable.
+	
+		\part Male-optimal pairing.\\
+		Proof similar in the Notebook. Proof by Well Ordering Principle: first introduce a first man M who is rejected by his optimal woman W, \ldots.
+		
+		And it's Male-optimal pairing.
+	
+	\end{parts}
+	
+	In short, proving stability and optimality needn't the precise day to propose. So the output remains the same.
+	
+
+\end{parts}
+
+\section{Optimal Partners}
+
+Proof by Contradiction.
+
+Assume both M and M* 's optimal woman are W. And we have two sets where M* and M end up with his optimal women W: \\
+Set T : (M , W), (M*, W*); \\
+Set S : (M, $W^-$), (M*, W);
+
+And for women W, there are two cases:
+
+\begin{enumerate}[ (a)]
+
+	\item If woman W likes M* more than M. Then in the Set S, (M*, W) is a rough couple.
+
+	\item If woman W likes M more than M*. Then in the Set T, (M, W) is a rough couple.
+
+\end{enumerate}
+
+In both cases, there exists a contradiction.
+
+So no two men can have the same optimal partner.
+
+\section{Examples or It's Impossible}
+
+\begin{parts}
+
+	\part Possible. 
+	
+	\begin{tabular}{ cc }
+	
+	\begin{tabular}{ |c|c |} 
+	\hline
+	men & preferences  \\\hline
+	A & 1, 2, 3  \\\hline
+	B & 2, 1, 3  \\\hline
+	C & 3, 2, 1  \\
+	\hline
+	\end{tabular} &
+	
+	\begin{tabular}{ |c|c |} 
+	\hline
+	women & preferences  \\\hline
+	1 & A, B, C  \\\hline
+	2 & B, A, C  \\\hline
+	3 & C, B, A  \\
+	\hline
+	\end{tabular}
+	\end{tabular}
+
+	\part Possible.
+	
+	\begin{tabular}{ cc }
+	
+	\begin{tabular}{ |c|c |} 
+	\hline
+	men & preferences  \\\hline
+	A & 2, 1, 3  \\\hline
+	B & 1, 2, 3  \\\hline
+	C & 2, 3, 1  \\
+	\hline
+	\end{tabular} &
+	
+	\begin{tabular}{ |c|c |} 
+	\hline
+	women & preferences  \\\hline
+	1 & A, B, C  \\\hline
+	2 & B, C, A  \\\hline
+	3 & C, A, B  \\
+	\hline
+	\end{tabular}
+	\end{tabular}
+	
+	\part Possible.
+	
+	\begin{tabular}{ cc }
+	
+	\begin{tabular}{ |c|c |} 
+	\hline
+	men & preferences  \\\hline
+	A & 1, 2, 3  \\\hline
+	B & 2, 1, 3  \\\hline
+	C & 3, 2, 1  \\
+	\hline
+	\end{tabular} &
+	
+	\begin{tabular}{ |c|c |} 
+	\hline
+	men & preferences  \\\hline
+	1 & C, B, A  \\\hline
+	2 & C, A, B  \\\hline
+	3 & A, B, C  \\
+	\hline
+	\end{tabular}
+	\end{tabular}
+	
+	\part Possible.\\
+	But I can't think of an instance.
+	
+	{\red Impossible.
+	
+	The proof is quite beautiful written by a student. I will write it our tomorrow to see if I have really understood it.
+	
+	\hrule
+	
+	\begin{proof}
+	
+	Proof by contradiction.
+	
+	Say every man pairs with his last choice, namely $\{(M_1,W_1), (M_2,W_2),\ldots, (M_n,W_n)\}$. Then assume the algorithm ends at the $K^{th}$ day, on that day $M_1$ proposes to $W_1$. And on  $K-1^{th}$, $M_1$ proposes to another woman $W*$ and is rejected, since $W*$ has already someone $M*$ on her string.
+	
+	Having these observation, 
+	\begin{enumerate}
+	
+		\item $M_1$ proposes to $W_1$ at the last day $\implies W_1$ has nobody on her string and never was proposed by any man before.
+	
+		\item $W*$ has $M*$ on her string and $W*$ is $M*$ last choice $\implies M*$
+must propose to $W_1$ before.
+	\end{enumerate} 
+	
+	Contradiction. Thus the proof is done.
+	
+	\end{proof}
+		
+	}
+	
+	\part Impossible.
+	
+	Say a man M ends up with his last choice woman W. Next we wanna prove that on W's list, M is her first choice.
+	
+	Let M pairs up with other $n-1$ women, say $W_1, W_2, \ldots, W_{n-1}$ whose responding men are $M_1, M_2, \ldots, M_{n-1}$.
+	
+	M like $W_1, W_2, \ldots, W_{n-1}$ more than W, and since they are not rough couple, which implies $W_1, W_2, \ldots, W_{n-1}$ like their $M_1, M_2, \ldots, M_{n-1}$ more than M.
+	
+	Besides M is on $W_1, W_2, \ldots, W_{n-1}$ second place, so $M_1, M_2, \ldots, M_{n-1}$ are all $W_1, W_2, \ldots, W_{n-1}$ first choice.
+	
+	Thus the remaining couple, for W, her first choice is not determined.
+	
+	\hrule
+	
+	All the above is not related.\\
+	Answer should be Possible.
+	
+	\begin{tabular}{ cc }
+	
+	\begin{tabular}{ |c|c |} 
+	\hline
+	men & preferences  \\\hline
+	A & 2, 3, 1  \\\hline
+	B & 2, 1, 3  \\\hline
+	C & 3, 2, 1  \\
+	\hline
+	\end{tabular} &
+	
+	\begin{tabular}{ |c|c |} 
+	\hline
+	men & preferences  \\\hline
+	1 & C, A, B  \\\hline
+	2 & B, A, C  \\\hline
+	3 & C, A, B  \\
+	\hline
+	\end{tabular}
+	\end{tabular}
+
+	
+	
+	
+	
+
+\end{parts}
+
+ 
+
+\end{document}

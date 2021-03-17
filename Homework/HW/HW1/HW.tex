@@ -1,0 +1,53 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{enumerate}
+
+\begin{document}
+{\Large 3 Propositional Practice} \\[.3cm]
+
+\begin{parts}
+
+\part $(\exists x \in \mathbb{R}) \ (x \notin \mathbb{Q})$
+
+True.
+
+Consider $x = \pi$. $\pi \in \mathbb{R}$, and $\pi \notin \mathbb{Q}$, so the problem is true.
+
+\part $(\forall x \in \mathbb{Z}) \ (((x \in \mathbb{N}) \lor (x < 0)) \land (\neg ((x \in \mathbb{N}) \land (x < 0 ))))$ 
+
+True.
+
+Let $x \in \mathbb{N}$, so $x >= 0$ or $x < 0$, but not both.
+
+If $x >= 0$, then $x$ is a natural number; if $x < 0$, then is negative; $x$ can't be both.
+
+Thus, the proposition is true.
+
+\part $(\forall x \in \mathbb{N})\ ((6 \mid x) \Rightarrow ((2 \mid x) \lor (3 \mid x)))$
+
+True.
+
+Let $x \in \mathbb{N}$, $x = 6 * k$, so $x \in \mathbb{N}$
+
+So $x = 2 * (3k)$ where $3k\in \mathbb{N}$, which means that $ 2 \mid x$
+
+So $((2 \mid x) \lor (3 \mid x))$ is true, which means that the proposition is true. 
+
+\part All real numbers are complex numbers.
+
+True.
+
+Let $x \in \mathbb{R}$, so $x = x + 0 * i$, and sin $x, 0 \in \mathbb{R}$, So by the definition of complex numbers, $x$ is a complex number.
+
+\part Integers that are divisible by 2 or 3 are divisible by 6.
+
+False. 
+
+Give a counter example, take integer $n = 2$, $2 \mid n$ is true but $6 \mid n$ is false.
+
+So by the definition of implication, this proposition is false.
+
+\end{parts}
+\end{document}

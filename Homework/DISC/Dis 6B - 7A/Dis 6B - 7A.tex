@@ -1,0 +1,78 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{listings}
+
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 Dis 6B - 7A \\Good Question}
+\date{Mar 6, 2021}
+
+\begin{document}
+\maketitle
+\section{Hello World!}
+You want to determine whether a program P prints "Hello World!" before running the $k$th line in the program. Is there a computer program that can perform this task? Justify your answer.
+
+{\blue Proof by contradiction.
+
+\begin{proof}
+Say such program exists, called HWTest(P, x). Then we can use this program as subroutine to def Halt program, namely Halt(P, x).
+
+\begin{lstlisting}
+	Halt(P, x)
+	#def P' as: run P without printing operations :
+	#Print("Hello World!")
+	If HWTest(P', x): return True.
+	If not HWTest(P', x): return False.
+\end{lstlisting}
+Therefore, if such HWTest exists, we can generate Halt problem, which we know doesn't exists. So HWTest doesn't exists.
+\end{proof}
+}
+
+\section{Computability}
+There is no computer program Line which takes a program P, an input x, and a line number L, and determines whether the Lth line of code is executed when the program P is run on the input x.
+
+{\blue Proof by contradiction.
+
+\begin{proof}
+Say such program exists, called Line(P, x). Then we can use this program as subroutine to def Halt program, namely Halt(P, x).
+
+\begin{lstlisting}
+	Halt(P, x)
+	#def P' as: modify P with each exit and return statement jumping to the L line.
+	If Line(P', x): return True.
+	If not Line(P', x): return False.
+\end{lstlisting}
+Therefore, if such Line exists, we can generate Halt problem, which we know doesn't exists. So Line doesn't exists.
+\end{proof}
+}
+
+\section{Counting on Graphs}
+How many ways are there to color the faces of a cube using exactly 6 colors, such that each face has a different color? Note: two colorings are considered the same if one of them can be obtained by rotating the other.
+
+{\blue
+If no restriction : 6! permutation.\\
+Now we wanna fix one face, say Up. $\implies$ There are 6 choices. \\
+Once we fix Up, we can rotate the cube right/left four times. $\implies$ There are another 4 choices.\\
+Therefore, there are 24 mapping to 1.\\
+Total number: 6!/24 
+}
+
+\section{Captain Combinatorial}
+Prove
+$$
+\sum _{i=1} ^n i {n \choose i}^2 = n {2n - 1 \choose n - 1}
+$$
+{\blue
+RHS: first we can express ${n \choose i}^2$ as ${n \choose i} * {n \choose n - i}$, then imagine there are n men and n women. First we  choose $i$ men, which is ${n \choose i}$, then we choose $(n-i)$ women, which is ${n \choose n-i}$. Since there is also i in the sum, we pick one man to be the captain. Therefore, the RHS is satisfied.
+
+LHS: we know in total we choose n people, among which there is a captain. So we can also first choose the captain in men, which is $n$. Then in the remaining, we choose $n-1$ people, which is ${2n-1 \choose n-1}$. So RHS is also satisfied. 
+
+}
+
+\end{document}

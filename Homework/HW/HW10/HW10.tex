@@ -1,0 +1,166 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{mathtools}
+\graphicspath{{./Picture/}}
+
+\newcommand{\red}{\color{red}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 HW 10}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Family Planning}
+\begin{parts}
+
+	\part $\{g\}: {1 \over 2}$\\
+	$\{b, g\}: {1 \over 4}$\\
+	$\{b, b, g\}: {1 \over 8}$\\
+	$\{b, b, b\}: {1 \over 8}$
+	
+
+	\part 
+	\begin{tabular}{ |c|c|c|c| } 
+	\hline
+	 & C = 1 & C = 2 & C = 3 \\\hline
+	G = 0 & 0 & 0 & ${1 \over 8}$ \\\hline
+	G = 1 & ${1 \over 2}$ & ${1 \over 4}$ & ${1 \over 8}$ \\
+	\hline
+	\end{tabular}
+	
+	\part
+	\begin{tabular}{ |c|c| } 
+	\hline
+	P(G = 0) & ${1 \over 8}$ \\\hline
+	P(G = 1) & ${7 \over 8}$ \\\hline
+	\end{tabular}
+	
+	\begin{tabular}{ |c|c|c| } 
+	\hline
+	P(C = 1) & P(C = 2) & P(C = 3) \\\hline
+	${1 \over 2}$ & ${1 \over 4}$ & ${1 \over 4}$ \\\hline
+	\end{tabular}
+	
+	\part Not indenpendent. $P(C = 1, G = 0) = 0 \neq P(C = 1) * P(G = 0)$.
+	
+	\part
+	E(G) = ${7 \over 8}$. \\
+	E(C) = ${1 \over 2} + 2 * {1 \over 4} + 3 * {1 \over 4} = {7 \over 4}$.
+
+\end{parts}
+
+\section{Will I Get My Package}
+\begin{parts}
+
+	\part Define an indicator $X_i: i^{th}$ person receives his package and unopened. Then event $X = X_1 + X_2 + \dots + X_n$. \\
+	$P(X_i = 1) = {1 \over 2}{(n-1)! \over n!} = {1 \over 2n}$. Therefore, $E(X_i) = p = {1 \over 2n}$. $E(X) = \sum_i E(X_i) = n * p = {1 \over 2}$.
+
+	\part $Var(X) = E(X^2) - E(x)^2 = E(X^2) - {1 \over 4}$. Now we compute 
+	\begin{align*} 
+	E(X^2) &= \sum _{i=1}^n (X_i^2) + \sum_{i \neq j} (X_i)(X_j) \\
+	&= n * {1 \over 2n} + n(n-1) {1 \over 4} {(n-2)! \over n!} = {3\over 4}.
+	\end{align*}
+	Therefore, $Var(X) = {3\over 4} - {1 \over 4} = {1 \over 2}$.
+
+\end{parts}
+
+\section{Double-Check Your Intuition Again}
+\begin{parts}
+
+	\part 
+	\begin{enumerate}[(i)]
+	
+		\item 
+		\begin{align*} 
+		Var(X+Y, X-Y) &= E((X+Y)(X_Y)) - E(X+Y)E(X-Y) \\
+		&= E(X^2 - Y^2) - E(X-Y)E(X+Y) \\
+		&= 0 - 0*E(X+Y) = 0
+		\end{align*}
+	
+		\item 
+		\begin{proof}
+		Say $P(X - Y = 0) = {6 \over 36} = {1 \over 6}$. But $P(X - Y = 0 \mid X + Y = 12) = 1 \neq P(X - Y = 0)$.
+		\end{proof}
+	
+	\end{enumerate}
+
+	\part True. 
+	
+	$Var(X) = E((X - E(X)^2)$. Since $(X - E(X)^2 \ge 0 \implies Var(X) \ge 0$. Only when $X - E(X) = 0$ everywhere, which implies that $X = E(X)$ everywhere, $X = E(X) = C$.
+
+	\part False. $Var(cX) = c^2Var(X)$.
+	\begin{align*} 
+	Var(cX) &= E(c^2X^2) - E(cX)^2 \\
+	&= c^2 E(X^2) - c^2E(X)^2 \\
+	&= c^2[E(X^2) - E(X)^2] \\
+	&= c^2Var(X)
+	\end{align*}
+	
+	\part False.
+	
+	Corr(A, B) = 0 and A, B  are R.V with nonzero standard deviations $\implies$ Cov(A, B) = 0. But it's not the same that P(AB) = P(A)P(B). Consider (-1, 0) (0, 1) (1,0) (0, -1) with prob ${1 \over 4}$ where Cov(A, B) = 0 but P(AB) $\neq$ P(A)P(B).
+	
+	\part True.
+	\begin{align*} 
+	var(X+Y) &= E((X+Y)^2) - E(X+Y)^2 \\
+	&= E(X^2 + Y^2 + 2XY) - (E(X) + E(Y))^2 \\
+	&= E(2XY) - 2E(X)E(Y) \\
+	&= 0 & \text{based on Corr(X, Y) = 0}
+	\end{align*}
+	
+	\part True.
+	
+	For any w $\in \Omega$, we have either case:
+	\begin{enumerate}[(i)]
+	
+		\item Case 1, X(w) > Y(w). 
+		\begin{align} 
+		max(X, Y)(w) &= X(w) \\
+		min(X, Y)(w) &= Y(w) 
+		\end{align}
+		multiply (1)(2) equations, we get exactly what we want. 
+		
+		\item Case 2, X(w) $\leq$ Y(w). 
+		\begin{align} 
+		max(X, Y)(w) &= Y(w) \\
+		min(X, Y)(w) &= X(w) & \text{based on Corr(X, Y) = 0}
+		\end{align}
+		multiply (3)(4) equations, we get exactly what we want. 
+	
+	\end{enumerate}
+	
+	\part False. 
+	\begin{proof}
+	Since X and Y independent, Corr(X, Y) = 0. Therefore, if Corr(max(X, Y), min(X, Y)) = 0, then we have
+	\begin{align*} 
+	Corr(max(X, Y), min(X, Y)) &= E(max(X, Y)min(X, Y)) - E(max(X, Y))E(min(X, Y)) \\
+	&= E(XY) - E(max(X, Y))E(min(X, Y)) \\
+	&= E(X)E(Y) - E(max(X, Y))E(min(X, Y))\\
+	&= 0.
+	\end{align*}
+	But the last equation here is false, we can give a counter-example, E(X)E(Y) $\neq$ 0 but E(min(X, Y)) = 0.
+	\begin{figure}[H]
+	   \centering
+	   \includegraphics[
+	  width = 0.45\textwidth]{ce.jpg} % requires the graphicx package
+	   \caption{counter-example}
+	   \label{fig:example}
+	\end{figure}
+	\end{proof}
+	
+	
+	
+\end{parts}
+
+
+
+
+
+\end{document}

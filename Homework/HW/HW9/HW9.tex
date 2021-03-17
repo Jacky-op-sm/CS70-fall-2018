@@ -1,0 +1,207 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{graphicx}
+\graphicspath{{./Picture/}}
+
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 HW9}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Double-Check Your Intuition}
+\begin{parts}
+
+	\part \begin{enumerate}[(i)]
+	
+		\item $f_X(x) = Pr(X = x) = {5 \choose x} ({1 \over 4})^x ({3 \over 4})^{5 - x}$. \\
+		$f_Y(y) = Pr(Y = y) = {5 \choose y} ({3 \over 4})^y ({1 \over 4})^{5 - y}$.
+	
+		\item $E(Z^2) = {1 \over 6} * (1 + 4 + 9 + 16 + 25 + 36) = {91 \over 6}$.
+	
+	\end{enumerate}
+
+	\part False. The intuition of this problem is that, if $\omega \in \Omega$, and $A(\omega) = i$ and $\omega' \in \Omega$, and $B(\omega') = i$ but $\omega \cap \omega' = \emptyset$. For example, 
+	\begin{figure}[h]
+	   \centering
+	   \includegraphics[
+  width = 0.45\textwidth]{head tail.jpg} % requires the graphicx package
+	   \caption{head tail}
+	   \label{fig:head tail}
+	\end{figure}
+	
+	\part False. Still from figure \ref{fig:head tail}, $E(C^2) = {1 \over 2}$, but $E(C)^2 = {1 \over 4}$.
+	
+	\part False. We can generate a case where one point $X(\omega)$ is very very big, and elsewhere is just small. And $Y(\omega)$ are all very small. Give a picture to show:
+	\begin{figure}[H]
+	   \centering
+	   \includegraphics[
+  width = 0.45\textwidth]{XY.jpg} % requires the graphicx package
+	   \caption{E(X) and E(Y)}
+	   \label{fig:XY}
+	\end{figure}
+	
+	\part False. Still by figure \ref{fig:head tail}, we can assign A as H - 2, T - 1. Event B as H - 3, T - 2. The RHS is ${2 \over 5} \cdot {1 \over 2}+{1 \over 3} \cdot {1 \over 2} = {11 \over 30}$. The LHS is ${{3 \over 2} \over {{3 \over 2} + {5 \over 2}}}$. Thus they are not equal.
+	
+	\part False. First according to the note, only if all subsets of A, B, C the equation  hold, then they are mutually independent. Then give a counter example, 
+	
+	\begin{figure}[H]
+	   \centering
+	   \includegraphics[
+	  width = 0.45\textwidth]{AUBUC.jpg} % requires the graphicx package
+	   \caption{}
+	   \label{fig:example}
+	\end{figure}
+	where $P(A \cap B) \neq P(A) \cdot P(B)$.
+	
+	{\blue {\bf Sol}: Let A be an event with probability 0 and let B be some event with probability 1/2 and let C = B. Then $P(A\cap B \cap C) \leq P(A) = 0 = P(A)P(B)P(C)$ but B and C are clearly not independent.
+	}
+	
+	
+
+	\part For most events, this statement is true. But with an exception is that the possibility space $\Omega$ where $P(\Omega) = 1$.
+	
+	\part True. $P(\overline{A} \cap \overline{B}) = 1 - P(A \cup B) = 1 - (P(A) + P(B) - P(A \cap B)) = 1 + P(A) \cdot P(B) - (P(A) + P(B)) = (1 - P(A)) \cdot (1 - P(B)) = P(\overline{A}) \cdot P(\overline{B})$.
+
+\end{parts}
+
+\section{Airport Revisited}
+\begin{parts}
+
+	\part $X_i$: airport $i$ is empty.\\
+	$X = X_1 + X_2 + \dots + X_n$.\\
+	$E(X_i)$ = $P(X_i$ is empty) = ${1 \over 4}$;\\
+	Therefore $E(X) = nE(X_i) = {n \over 4}$.
+
+	\part $X_i$: airport $i$ is empty.\\
+	$X = X_1 + X_2 + \dots + X_n$.\\
+	$E(X_i) = P(X_i$ is empty). To help us understand this, we draw a picture, and therefore we can conclude that $P(X_i$ is empty) = $\sum i \in N(i) (1 - {1 \over deg(i)})$. \\
+	Therefore $E(X) = nE(X_i) = \sum _{i=1}^n \sum_{i \in N(i)} (1 - {1 \over deg(i)})$.
+
+\end{parts}
+
+\section{Fizzbuzz}
+\begin{parts}
+
+	\part Set $S = \{1, 2, 4, 7, 8, 11, 13, 14\} \mod 15$. Thus P(integer) = ${8 \over 15}$. The total number is ${8 \over 15}*n$.
+	
+	Or another method from part (b), ${\phi(n)
+\over n} = (1 - {1 \over 3})(1 - {1 \over 5}) = {8 \over 15}$. Therefore, $\phi(n) = {8 \over 15}*n$.
+
+	\part \begin{proof}
+	Combinational proof.
+	
+	LHS: the probability to get a number relatively prime to the number $n$.\\
+	RHS: given a prime factor $p_j$, there are ${n \over  p_j}$ numbers that are multiple of $p_j$, therefore the probability to get a number relatively prime to the number $p_j$ is $(1 - {n \over  p_j} / n ) = 1 - {1 \over p_j}$. Thus for all $P_j$, to get a number relatively prime to $n$, it's equivalent to get a number relatively prime to each $P_j$. So we get the RHS $\prod_{j=1}^k (1 - {1 \over p_j})$.
+	\end{proof}
+
+\end{parts}
+
+\section{Cliques in Random Graphs}
+\begin{parts}
+
+	\part $2^{n \choose 2}$.
+	
+	For each edge, exist or not, therefore 2 choices. \\
+	Total edge number, ${n \choose 2}$.\\
+	Therefore, $2^{n \choose 2}$. By first counting rule.
+
+	\part Like a complete graph, total edge number ${n(n-1) \over 2}$. Thus P(k-clique of a set k) = $({1 \over 2})^{k(k-1) \over 2}$.
+	
+	\part \begin{align*} 
+	{n \choose k} &= {n! \over (n-k)!\cdot k!} < {n! \over (n-k)!} \\
+	&= n * (n - 1) * \dots (n - k + 1) \\
+	&< n * n * * \dots n = n^k.
+	\end{align*}
+	
+	\part 
+	Def event X: graph contains a k-clique.\\ $X_i$: this particular k vertices have 
+a k-clique. \\
+	$X = X_1 \cup X_2 \dots X_a$. where $a = {n \choose k}$. \\
+	Therefore, applying the union bound, 
+	\begin{align*} 
+	P(X) &< \sum X_i = {n \choose k} \cdot ({1 \over 2})^{k(k-1) \over 2} \\
+	&\leq n^k \cdot 2^{k(1-k) \over 2}\\
+	&\leq n^k \cdot (\sqrt2 n^2)^{1-k}\\
+	&=(\sqrt2)^{1-k} \cdot n^{2-k} \\
+	&\leq n^{2-k}
+	\end{align*}
+	To prove $n^{2-k}$ is less than $n^{-1}$, which is equivalent to prove $k \ge 3$. Since $k \ge 4logn + 1$, when $k = 3$, this equation doesn't hold, k must be larger than 3. Therefore, $n^{2-k} \leq n^{-1}$. The proof is done.
+	
+\end{parts}
+
+\section{Balls and Bins, All Day Every Day}
+\begin{parts}
+
+	\part If no constrain, \# of bars: n - 1.  \# of stars: 2n - 1. \\
+	Now exactly k balls in first bin, \# of bars: n - 2.  \# of stars: 2n - k - 1. \\
+	Therefore, ${2n - k - 1 \choose n - 2}$.
+
+	\part at least half of balls in the first bin $\implies {n \over 2}$ or ${n \over 2} + 1$ \dots or n balls in the first bin. \\
+	Therefore, $$
+	\sum _{k = {n \over 2}} ^n {2n - k - 1 \choose n - 2}.
+	$$
+	
+	\part Def event X: some bins contain at least half of the balls. \\
+	Event event $X_i$: $i^{th}$ bin contain at least half of the balls. \\
+	We know that $X = X_1 \cup X_2 \dots X_n$. Thus applying union bound, $P(X) \leq \sum _i X_i = n * p$.
+	
+	\part Def event X: at least half of the balls land in the first bin. \\
+	Event Y: at least half of the balls land in the second bin. \\
+	$P(X \cup Y) = P(X) + P(Y) - P(X \cap Y) = p + p - {1 \over {2n - 1 \choose n-1}}$.
+	
+	\part First, we simplify the problem by assuming the first ball is in the first bin. Then by part (a), we know the probability of exactly k balls in the first bin. Therefore, conditioning on the number of balls in the first bin, we have $$
+	\sum _{k = 1} ^n {1 \over k} {2n - k - 1 \choose n - 2}
+	$$
+	Now we cancel the simplification, the first balls may uniformly at any balls, therefore, the answer is just multiply of above equation.
+	$$
+	n \sum _{k = 1} ^n {1 \over k} {2n - k - 1 \choose n - 2}
+	$$
+	
+	{\blue I don't think my solution in wrong, the question itself doesn't tell whether the balls are different or not. In usual sense, if only caring about the number of balls in a particular bin, it shouldn't matter. But the solution is such one.
+	
+	So I just stick some pictures here.
+		
+		\begin{figure}[H]
+		   \centering
+		   \includegraphics[
+		  width = 1\textwidth]{1.png} % requires the graphicx package
+		   \caption{part (a)}
+		   \label{fig:example}
+		\end{figure}
+		
+	\begin{figure}[H]
+		   \centering
+		   \includegraphics[
+		  width = 1\textwidth]{d.png} % requires the graphicx package
+		   \caption{part (d)}
+		   \label{fig:example}
+		\end{figure}
+		
+	\begin{figure}[H]
+		   \centering
+		   \includegraphics[
+		  width = 1\textwidth]{e.png} % requires the graphicx package
+		   \caption{part (e)}
+		   \label{fig:example}
+		\end{figure}
+}
+	
+	
+	
+
+
+\end{parts}
+
+
+
+\end{document}

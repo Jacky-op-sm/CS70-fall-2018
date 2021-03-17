@@ -1,0 +1,92 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{mathtools}
+
+\newcommand{\red}{\color{red}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 HW5}
+\date{February 28, 2021}
+
+\begin{document}
+\maketitle
+
+\section{Quick Computes}
+\begin{parts}
+
+	\part $3^{33} \equiv 5 \pmod{11}$.
+	
+	Since gcd(3, 11) = 1 and 11 is a prime number. we have $3^{10} \equiv 1 \pmod {11}$, and $33 \equiv 3 \pmod {10}$, so the original answer is same to $3^{3} = 27 \equiv 5 \pmod{11}$.
+
+  	\part $10001^{10001} \equiv 5 \pmod{17}$.
+	
+	$10001 \equiv 5 \pmod{17}$. Since gcd(5, 17) = 1 and 17 is a prime number. we have $5^{16} \equiv 1 \pmod {17}$, and $10001 \equiv 1 \pmod {16}$, so the original answer is same to $5^{1} = 5 \equiv 5 \pmod{17}$.
+
+  	\part $10^{10} + 20^{20} + 30^{30} + 40^{40} \equiv 1 \pmod{7}$.
+	\begin{align*} 
+	10^{10} + 20^{20} + 30^{30} + 40^{40} &\equiv 3^{4} + 6^{2} + 2^{0} + 5^{4} \\
+	&= 81 + 36 + 1 + 625 \\
+	&= 743 \\
+	&\equiv 1 \pmod{7}
+	\end{align*}
+
+\end{parts}
+
+\section{RSA Practice}
+
+\begin{parts}
+
+	\part N = p * q = 77;
+
+	\part $e$ relatively prime to (p-1)*(q-1) = 60;
+	
+	\part smallest prime number $e$ is 7;
+	
+	\part $\gcd(e,(p-1)(q-1)) = 1$;
+	
+	\part $d = e^{-1} \pmod {60} \equiv 43 \pmod {60}$;
+	
+	\part The procedure is as following:
+	\begin{align*} 
+	E(x) &= 30^7 \pmod {77} \\
+	&= 30 * 900^3\\
+	&= 30 * 55^3\\
+	&\equiv 2
+	\end{align*}
+	
+	\part $D(E(x)) = x = 30$;
+
+\end{parts}
+
+\section{Squared RSA}
+
+\begin{parts}
+
+	\part Claim : For any prime $p$ and its square $p^2$, for any $ a \in \{1, 2, \dots, p^2 - 1\}$, we have $a^{p(p - 1)} \equiv 1 \pmod{p^2} $
+	
+	\begin{proof}
+	Define a Set S = \{s $\mid$ s is prime to $p^2$\}, and from HW04 we learn that $\phi(p^2) = p*(p-1)$; And define a map T from S to S and $T = a * s, s \in S$ is a bijection. Looping in two ways, $\prod S_i\equiv a^{|S|=\phi(p^2)=p*(p-1)}\prod S_i \pmod p^2$. Thus dividing each side of $\prod S_i$, we obtain $a^{p(p - 1)} \equiv 1 \pmod{p^2} $.
+	\end{proof}
+
+	\part We wanna prove that $x^{ed} \equiv x \pmod{N}$.
+	\begin{proof}
+	By the definition of $ed$, we have $ed \equiv 1 \pmod {p(p-1)q(q-1)}$;hence we can write $ ed = 1 + k p(p-1)q(q-1)$ for some integer k, and therefore
+	$$
+	x^{ed} - x = x(x^{k p(p-1)q(q-1)} -1)  
+	$$
+	Since we know from part (a), that $x^{k p(p-1)} \equiv 1 \pmod {p^2}$, same as $x^{k q(q-1)} \equiv 1 \pmod {q^2}$. So the expression $(x^{k p(p-1)q(q-1)} -1)$ is both the multiple of $p^2$ and $q^2$. Since $gcd(p, q) \neq 1$, $(x^{k p(p-1)q(q-1)} -1)$ must be multiple of $p^2 q^2 = N$.
+	
+	\end{proof}
+	
+	\part Claim: If this scheme can be broken, normal RSA can be as well.
+	\begin{proof}
+	If knowing $p^2q^2$, we can deduce $p(p - 1)q(q - 1)$. Then we can obtain $pq$ since $pq = \sqrt {p^2q^2}$, we can also obtain $(p - 1)(q - 1)$, since $(p - 1)(q - 1) = p(p - 1)q(q - 1)/ pq$. Therefore, if this scheme can be broken, normal RSA can be as well.
+	\end{proof}
+
+\end{parts}
+
+
+\end{document}

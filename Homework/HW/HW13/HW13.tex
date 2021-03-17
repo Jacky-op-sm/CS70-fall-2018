@@ -1,0 +1,394 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{{./Picture/}}
+
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 HW 13}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Buffon’s Needle on a Grid}
+Before we formally solve the following questions, I think the most important part is to model this problem, maybe with the similar method talked in the lecture.
+
+Setting: 
+center (x, y) where 0 < x < 1/2 ; 0 < y < 1/2 and $f_{X,Y}(x,y) = 4$.
+\begin{figure}[H]
+   \centering
+   \includegraphics[
+  width = 0.35\textwidth]{A square.jpg} % requires the graphicx package
+   \caption{A sample square}
+   \label{fig:example}
+\end{figure}
+
+And we can also get 
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.3\linewidth, height=0.15\textheight, angle =-90]{union.jpg}
+        \caption{Distribution of Union and $\theta$}
+        \label{fig:A square.jpg}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.35\linewidth, height=0.15\textheight]{X Y.jpg}
+        \caption{$distribution of X and Y$}
+        \label{fig:prob1_6_1}
+    \end{minipage}
+\end{figure}
+
+Then having those setting, we can compute as following:
+\begin{parts}
+
+	\part $Pr(X > {1 \over 2}cos\theta \cap Y > {1 \over 2}sin\theta \mid \Theta = \theta) = 4 * ({1 \over 2} - {1 \over 2}cos\theta)({1 \over 2} - {1 \over 2}sin\theta)$.
+
+	\part By the law of total probability, we have 
+	\begin{align*} 
+	&\int_0^{\pi \over 2} Pr(X > {1 \over 2}cos\theta \cap Y > {1 \over 2}sin\theta \mid \Theta = \theta) \cdot Pr(\Theta = \theta)\,d\theta \\
+	&= \int_0^{\pi \over 2} 4 * ({1 \over 2} - {1 \over 2}cos\theta)({1 \over 2} - {1 \over 2}sin\theta) \cdot {\pi \over 2}\,d\theta \\
+	&= {2 \over \pi} \int_0^{\pi \over 2} (1  - cos\theta)(1  - sin\theta)\,d\theta \\
+	&= {2 \over \pi} \int_0^{\pi \over 2}1- cos\theta - sin\theta + {1\over2}sin(2\theta)\,d\theta \\
+	&= {2 \over \pi}\cdot[{\pi \over2} - {3\over2}] \\
+	&= 1 - {3\over \pi}
+	\end{align*}
+	Therefore, Pr(intersects a grid line) = $1 - (1 - {3\over \pi}) = {3\over \pi}$.
+	
+	\part Now we wanna compute Pr(intersects twice)					
+	\begin{align*} 
+	 &= Pr(X < {1 \over 2}cos\theta \cap Y < {1 \over 2}sin\theta \mid \Theta = \theta) \cdot Pr(\Theta = \theta)\,d\theta \\
+	&= {2 \over \pi} \int_0^{\pi \over 2} cos\theta sin\theta \,d\theta \\
+	&= {1 \over \pi}
+	\end{align*}
+	Therefore, Pr(twice) = ${1 \over \pi}$, Pr(once) = ${3\over \pi} - {1 \over \pi} = {2 \over \pi}$. Then we compute $E(X) = 1 * {2 \over \pi} + 2 * {1 \over \pi} = {4 \over \pi}$.
+	
+	{\blue {\bf An alternative Solutions:} Since we know that E(cross a line in a parallel lines) = ${2\over \pi}$. If we define $X_1$ as vertical, $X_2$ as horizontal, then E(X) = $E(X_1) + E(X_2) = 2 * {2\over \pi} = {4\over\pi}$.
+	}
+	
+	\part Pr(X = 1) = ${2 \over \pi}$.
+	
+	\part If we define R.V $Y_i$: the number of intersections with length ${1\over3}$ of $i^{th}$ edge. Then we have $Y = \sum_i Y_i$. Therefore, $E(Y) = E(\sum_i Y_i) = \sum_i E(Y_i) = 3 * E(Y_i)$. Now we compute $E(Y_i)$ same as before.\\
+	Pr(X = 0) 
+	\begin{align*} 
+	&=\int_0^{\pi \over 2} Pr(X > {1 \over 6}cos\theta \cap Y > {1 \over 6}sin\theta \mid \Theta = \theta) \cdot Pr(\Theta = \theta)\,d\theta \\
+	&= \int_0^{\pi \over 2} 4 * ({1 \over 2} - {1 \over 6}cos\theta)({1 \over 2} - {1 \over 6}sin\theta) \cdot {\pi \over 2}\,d\theta \\
+	&= {2 \over \pi} \int_0^{\pi \over 2} (1  - {1\over3}cos\theta)(1  - {1\over3}sin\theta)\,d\theta \\
+	&= {2 \over \pi} \int_0^{\pi \over 2}1- {1\over3}cos\theta - {1\over3}sin\theta + {1\over18}sin(2\theta)\,d\theta \\
+	&= {2 \over \pi}\cdot[{\pi \over2} - {5\over9}] {\red = {2 \over \pi}\cdot[{\pi \over2} - {2\over3} + {1\over18}]}\\
+	&= 1 - {10\over 9\pi} = {\red 1 - {11\over 9\pi}}
+	\end{align*}
+	Therefore, Pr(intersects a grid line) = $1 - (1 - {10\over 9\pi}) = {10\over 9\pi}$.
+	
+	{\red {\bf Correct:}Pr(intersects a grid line) = $1 - (1 - {11\over 9\pi}) = {11\over 9\pi}$}
+	
+	Now we wanna compute Pr(intersects twice)
+	\begin{align*} 
+	 &= Pr(X < {1 \over 6}cos\theta \cap Y < {1 \over 6}sin\theta \mid \Theta = \theta) \cdot Pr(\Theta = \theta)\,d\theta \\
+	&= {1 \over \pi} {1\over9}\int_0^{\pi \over 2} 2cos\theta sin\theta \,d\theta \\
+	&= {1 \over 9\pi}
+	\end{align*}
+	Therefore, Pr(twice) = ${1 \over 9\pi}$, Pr(once) = ${10\over 9\pi} - {1 \over 9\pi} = {1 \over \pi}$. Then we compute $E(X) = 1 * {1 \over \pi} + 2 * {1 \over 9\pi} = {11 \over 9\pi}$.
+	
+	{\red {\bf Correct:} Pr(twice) = ${1 \over 9\pi}$, Pr(once) = ${11\over 9\pi} - {1 \over 9\pi} = {10 \over 9\pi}$. Then we compute 
+	$$
+	E(X_i) = 1 * {10 \over 9\pi} + 2 * {1 \over 9\pi} = {4 \over 3\pi}
+	$$
+	Then  
+	$$
+	E(X) = 3(X_i) = {4 \over 3\pi} * 3 =  {4 \over \pi}.
+	$$
+	}
+	
+	{\red {\bf Sol:} Actually it's not that difficult, we needn't compute all again.
+	
+	Let $Y_i$ be the number of times the i-th side of the triangle intersects a grid line, for i = 1, 2, 3. Thus, the total number of times this triangle intersects a grid line is $Y_1 +Y_2 +Y_3$.
+	
+	Let us revisit part (c), however. Let $Z_1$ be the number of times the first ${1\over3}$ of the needle intersects a grid line, and let $Z_2$ be the number of times the second ${1\over3}$ of the needle intersects the grid line, and similarly for $Z_3$. We know that
+	$$
+	E(Z_1 + Z_2 + Z_3) = {4\over\pi}
+	$$
+	
+	But we also know that $E(Y_i) = E(Z_i)$. Therefore, 
+	$$
+	E(Y_1 + Y_2 + Y_3) = E(Z_1 + Z_2 + Z_3) = {4\over\pi} 
+	$$
+}
+
+
+\end{parts}
+
+
+\section{Variance of the Minimum of Uniform Random Variables}
+We obtain pdf first by its CDF
+\begin{align*} 
+Pr(Y \leq y) &= 1 - Pr(Y >y) \\
+&= 1 - ({1 - y \over 1})^n \\
+&= 1 - (1-y)^n
+\end{align*}
+Then if we differentiate it, we obtain
+\begin{align*} 
+f_Y(y) = n\cdot (1-y)^{n-1}
+\end{align*}
+And we can obtain  
+\begin{align*} 
+E(Y) &= \int_0^1 y n\cdot (1-y)^{n-1}\,dz \\
+&= n \int_0^1 (1-z) z^{n-1} \,dz & z = 1-y\\
+&= n \int_0^1 z^{n-1} - z^n \,dz\\
+&= n ( 1 /n - 1/ (n+1)) \\
+&= {1 \over 1+n}
+\end{align*}
+\begin{align*} 
+E(Y^2) &= \int_0^1 y^2 n\cdot (1-y)^{n-1}\,dz \\
+&= n \int_0^1 (1-z)^2 z^{n-1} \,dz & z = 1-y\\
+&= n \int_0^1 z^{n+1} - 2z^n + z^{n-1} \,dz\\
+&= n ( 1 /(n+2) - 2/ (n+1) + 1/n) \\
+&= {2 \over (1+n)(2+n)}
+\end{align*}
+Therefore, $Var(Y) = E(X^2) - E(X)^2 = {2 \over (1+n)(2+n)} - {1 \over (1+n)(1+n)}$.
+
+
+
+\section{Erasures, Bounds, and Probabilities}
+\begin{parts}
+
+	\part $X = X_1 + X_2 + \dots + X_{1000}$ where $X_i$ is an indicator with p prob of 1 value, 1 - p prob of 0 value. $E(X_i) = p, E(X) = E(\sum_i X_i) = \sum_i E(X_i) = 1000p$.
+	
+	Thus by Markov's inequality, 
+	$$
+	Pr(X \ge 200) < {E(X) \over 200} = {1000p \over 200} = 5p \leq 10^{-6}
+	$$
+	Therefore, $p \leq 2*10^{-7}$.
+
+	\part $Var(X_i) = p(1-p)$. $Var(X) = Var(\sum_i X_i) = \sum_i Var(X_i) = 1000p(1-p)$.
+	
+	Thus by Chebyshev's inequality, 
+	$$
+	Pr(X > 200) \leq Pr(|X - 1000p| \ge 200-1000p) \leq {1000p(1-p) \over (200-1000p)^2} \leq 10^{-6}
+	$$
+	Then we have
+	\begin{align*} 
+	1001p^2 - 1000.4p + 0.04 &\ge 0 \\
+	p &\leq 3.99856\times 10^{-5}
+	\end{align*}
+	
+	\part $E(X) = 1000p. Var(X) = 1000p(1-p)$. Therefore, we define a new R.V 
+	$$ Y = {X - 1000p \over \sqrt{1000p(1-p)}} $$
+	When X = 200, $y = {200 - 1000p \over \sqrt{1000p(1-p)}}$ and we want $\Phi(y) \ge 1- 10^{-6}$. From Normal Accumulative Distribution table, we know that $\Phi(4)$ satisfy this equation. Therefore, we have
+	\begin{align*} 
+	{200 - 1000p \over \sqrt{1000p(1-p)}} &\ge 4 \\
+	(10^6 + 16000)p^2 + (-4*10^5-16*10^3)p+4*10^4 &\ge 0 \\
+	p &\leq 0.1543
+	\end{align*}
+	
+\end{parts}
+
+
+\section{Sampling a Gaussian With Uniform}
+\begin{parts}
+
+	\part $Expo(1) = \lambda \cdot e^{-\lambda t}$. Now we wanna prove that the tail summation of $-lnU_1$ and Expo(1) are same. 
+	For Expo(1), we know that $Pr(X > t) = e^{-\lambda t} = e^{-t}$. 
+	For $-lnU_1$, \begin{align*} 
+	Pr(-lnU_1 \ge t) &= Pr(lnU_1 \leq -t) \\
+	&= Pr(U_1 \leq e^{-t}) \\
+	&= {e^{-t} \over 1} \\
+	&= e^{-t}
+	\end{align*}
+	Therefore, $-lnU_1 \to Expo(1)$.
+	
+
+	\part Still from CDF, we have 
+	\begin{align*} 
+	Pr(N_1^2+N_2^2 \leq r^2) &= \int \int_R {1\over \sqrt{2\pi}} \cdot e^{-x^2 \over 2} \cdot {1\over \sqrt{2\pi}} \cdot e^{-y^2 \over 2} \,dx \,dy \\
+	&= \int_0^{2\pi} \int_0^r {1\over 2\pi} \cdot e^{-r^2 (cos(\theta)^2 + sin(\theta)^2 / 2)} \, dr \, d\theta & x = r cos(\theta), y= r sin(\theta)\\
+	&= {1 \over 2\pi} \int_0^{2\pi} \int_0^r r e^{-r^2 \over 2}dr \, d\theta \\
+	&= -{1 \over 2\pi} \int_0^{2\pi} \int_0^r r e^{-r^2 \over 2}d({-r^2 \over 2}) \, d\theta \\
+	&= -{1 \over 2\pi} * 2\pi * e^{-r^2 \over 2} \bigg\vert^r_0 \\
+	&= 1 - e^{-r^2 \over 2}
+	\end{align*}
+	And for Expo(1/2), we know that $Pr(X < r) = 1 - e^{-r^2 \over 2}$. Therefore, $N_1^2 + N_2^2 \to Expo(1/2)$.
+	
+	\part Since we know the point $(N_1,N_2) $ will have a distance from the origin that is distributed as the square root of an exponential distribution. So we can make $Expo(1/2)$ by $1/2\sqrt{-lnU_1}$, denoted as R. And if we let $2\pi U_2$ denotes $\theta$, since $N_1 = R cos(\theta), N_2 = R sin(\theta)$, we can get a normal distribution by $R cos(\theta) = 1/2\sqrt{-lnU_1} \cdot 2\pi U_2$.
+	
+	{\blue What is the wrong? We can't get $Expo(1/2)$ by $1/2\sqrt{-lnU_1}$. Here I made a mistake to have pdf multiplied by each other. The right answer shall be $-2lnU_1 \to Expo(1/2)$. Then $R = \sqrt{-2lnU_1}, Rcos\theta = \sqrt{-2lnU_1} \cdot cos(2\pi U_2)$.
+	}
+
+\end{parts}
+
+
+\section{Markov Chain Terminology}
+\begin{parts}
+
+	\part irreducible: $0 < a \leq 1 \land 0 < b \leq 1$. \\
+	reducible: $a = 0 \lor b = 0$.
+
+	\part \begin{proof}
+	Direct proof. If we start at a, there must be 2*k steps to get back, the same as to start at b. So $gcd(n \mid p^n(i,i)) = 2$.
+	\end{proof}
+	
+	\part \begin{proof}
+	Direct proof. Since there exists a circle at node 0 and 1. So $n_{min} \mid P^n(i,i) = 1 \implies gcd(n \mid p^n(i,i)) = 1$ for any $i \in K$.
+	\end{proof}
+	
+	\part $$
+	P = \begin{pmatrix}
+	1- b & b \\
+	a & 1-a
+	\end{pmatrix}
+	$$
+	
+	\part Since $\pi = \pi \cdot P$.
+	We have
+	\begin{align*} 
+	(1-b)\pi_0 + a\pi_1 &= \pi_0 \\
+	\pi_0 + \pi_1 &= 1
+	\end{align*}
+	Solving these equations, we obtain $$ \pi_0 = {b \over a + b}, \pi_1 = {a \over a + b} $$ 
+
+
+\end{parts}
+
+
+\section{Analyze a Markov Chain}
+\begin{parts}
+
+	\part For each node: \\
+	Node 0: a cycle. \\
+	Node 1: $n \mid p^n(1,1) = 2 or 3 \dots$. \\
+	Node 2: $n \mid p^n(2,2) = 2 or 4 or 5 \dots$. \\
+	Therefore, we have $gcd(n \mid p^n(i,i)) = 1\, \forall i \in K$.
+
+	\part 
+	\begin{align*} 
+	&P[X(1) = 1, X(2) = 0, X(3) = 0, X(4) = 1 \mid X(0) = 0] \\
+	&= P[X(1) = 1 \mid X(0) = 0] \cdot P[X(2) = 0 \mid X(1) = 1] \dots \\
+	&= a \cdot (1-b) \cdot (1-a) \cdot a.
+	\end{align*}
+	
+	\part $\pi = \pi \cdot P$.
+	$$
+	\begin{cases}
+	&\pi_0 = \pi_0(1-a) + \pi_1(1-b) + \pi_2*0 \\
+	&\pi_1 = \pi_0a+ \pi_2*1 \\
+	&\pi_2 = b\pi_1 \\
+	&\pi_0 + \pi_1 + \pi_2 = 1
+	\end{cases}
+	$$
+	Solving these equations, we have 			\begin{align*} 
+	\pi_1 = {a \over a-b+a+ab} \\
+	\pi_2 = {ab \over a-b+a+ab} \\
+	\pi_3 = {1-b \over a-b+a+ab} 
+	\end{align*}
+	
+	\part Given we start at Node 1. Now we define $\mu_i: E[T_2 \mid X(0) = i]$ and then we have following equations 
+	$$
+	\begin{cases}
+	&\mu_1 = 1 + b\mu_2 + (1-b)\mu_0  \\
+	&\mu_0 = 1 + a\mu_1 + (1-a)\mu_0 \\
+	&\mu_2 = 0 
+	\end{cases}
+	$$
+	Solving these equations, we have
+	\begin{align*} 
+	\mu_0 = {1+a \over ab} \\
+	\mu_1 = {1+a - b \over ab} 
+	\end{align*}
+\end{parts}
+
+
+\section{Boba in a Straw}
+\begin{parts}
+
+	\part Draw the procession
+	\begin{figure}[H]
+	   \centering
+	   \includegraphics[
+	  width=0.25\linewidth,angle =90]{part b.jpg} % requires the graphicx package
+	   \caption{Markov's Chain}
+	   \label{fig:example}
+	\end{figure}
+	Then if let $\mu_i$ denote the expected \# of being absorbed in node 2 starting at i. We have following equations:
+	$$
+	\begin{cases}
+	\mu_0 &= 1 + p\mu_1 + (1-p)\mu_0 \\
+	\mu_1 &= 1+ p\mu_2 + (1-p)\mu_0 \\
+	\mu_2 &= 0
+	\end{cases}
+	$$
+	
+	{\blue Here I don't think my answer is wrong, the Markov chain of solution for part(a)(b) are all same as part(c).
+	\begin{figure}[H]
+	   \centering
+	   \includegraphics[
+	  width = 0.8\textwidth]{sol-a.png} % requires the graphicx package
+	   \caption{Sol of part(a)}
+	   \label{fig:example}
+	\end{figure}
+	}
+	
+
+	\part Similar to part(a), we have 
+	$$
+	\begin{cases}
+	&\mu_0 = p(2+\mu_1) + (1-p)(1+\mu_0) \\
+	&\mu_1 = p(3+\mu_2) + (1-p)(2+\mu_0) \\
+	&\mu_2 = 0
+	\end{cases}
+	$$
+	{\blue Solution:
+	\begin{figure}[H]
+	   \centering
+	   \includegraphics[
+	  width = 0.6\textwidth]{sol-b.png} % requires the graphicx package
+	   \caption{Sol of part(b)}
+	   \label{fig:example}
+	\end{figure}
+	
+	
+	}
+	
+	\part Still we draw the procession, 		\begin{figure}[H]
+	   \centering
+	   \includegraphics[
+	  width = 0.7\textwidth]{part c.jpg} % requires the graphicx package
+	   \caption{Markov Chain}
+	   \label{fig:example}
+	\end{figure}
+	According to Balanced Equation, $\pi = \pi \cdot P$. We have 
+	$$
+	\begin{cases}
+	&\pi_0 = (1-p)\pi_0 + (1-p)\pi_2 \\
+	&\pi_1 = p\pi_0 + p\pi_2 \\
+	&\pi_2 = (1-p)\pi_1 + (1-p)\pi_3\\
+	&\pi_3 = p\pi_1 + p\pi_3\\
+	&\pi_0 + \pi_1 + \pi_2 + \pi_3 = 1
+	\end{cases}
+	$$
+	Then solving these equations, we have
+	\begin{align*} 
+	\pi_0 &= (1-p)^2 \\
+	\pi_1 &= p(1-p) \\
+	\pi_2 &= p(1-p)\\
+	\pi_3 &= p^2\\
+	\end{align*}
+	Then since state 2 and 3 will get one boba, $V_{average\, calorie} = 10 * Pr(state\, at \,2 \,or \,3) = 10 * (\pi_2 + \pi_3) = 10 * p = 10p$. 
+	
+	\part Now since we already have our distribution, E(X)  \begin{align*} 
+	&= 0 * \pi_0 + 1\pi_1 + 1\pi_2 + 2\pi_3 \\	&=p(1-p) + p(1-p) + 2p^2 \\
+	&= 2p
+	\end{align*}
+
+\end{parts}
+
+
+\end{document}

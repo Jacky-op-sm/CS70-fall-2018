@@ -1,0 +1,201 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{listings}
+
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 HW 7}
+\date{Mar 6, 2021}
+
+\begin{document}
+\maketitle
+
+\section{Bijective or not?}
+\begin{parts}
+
+	\part $f(x) = 10^{-5}x$ 
+	\begin{enumerate}[(i)]
+	
+		\item Bijection. There exists an inverse function, $g(x) = 10^5y$.
+	
+		\item It's injective but not subjective. For any $x_1, x_2$ that $x_1 \neq x_2, f(x_1) \neq f(x_2)$. But not onto, since elements like irrational numbers, e.g $\sqrt2$ can't find $x$ that $f(x) = \sqrt2$.
+	
+	\end{enumerate}
+	
+	\part 
+	\begin{enumerate}[(i)]
+	
+		\item Not one-to-one. For any $x \in \mathbb{N}$ that $x > p, f(x) \equiv p \mod x$.
+	
+	Not onto. For $y = p - 1$, there is no $x \in 
+\mathbb{N}$ that $f(x) = p - 1$.
+	
+		\item For domain $\{(p+1)/2, \dots, p\}, f(x) = p \pmod x = p - \lfloor \frac{p}{x}\rfloor * x$. Since $x \ge (p+1)/2 > p/2$, thus  $\lfloor \frac{p}{x}\rfloor = 1$. Thus $f(x) = p - x$, which is one-to-one.
+		
+		Since the \# of elements in the domain and range are same and the function is one-to-one, it's on-to. 
+	
+	\end{enumerate}
+	
+	\part One-to-one. For any $x_1, x_2$ that $x_1 \neq x_2$, set $\{x_1\} \neq \{x_2\} \implies f(x_1) \neq f(x_2)$.
+	
+	Not onto. For any set S in powerset of D 
+that |S| $\ge 2$, there is no $x \in D$ that $f(x) = S$.
+
+	\part Bijection.
+	
+	After shuffling, the number X' is just a permutation of X. And we can list them as the natural number and their total number are both 10.
+\end{parts}
+
+
+\section{Counting Tools}
+\begin{parts}
+
+	\part Countable. Since A and B are countable, we can view them as natural number and therefore we can define a map $N \times N$ to $N^2$. Since $N^2$ is countable, which is shown in the note by spiral ordering. Thus it's countable.
+
+	\part Countable. We can define a map from $j$th element in $_{i \in A} B_i$ to (i, j), which is ultimately as $N^2$. Therefore it's countable. 
+	
+	\part Uncountable. 
+	\begin{proof}
+	Proof by contradiction.
+	
+	Say it's countable, then we can enumerate them where number in the diagonal are non-decreasing\\
+	\begin{tabular}{ c|c| } 
+	f & f(0) f(1) \dots \\\hline
+	g & g(0) g(1) \dots \\\hline
+	\vdots & \vdots
+	\end{tabular}\\
+	Then we can define a new map from the Diagonalization by modifying each number d to make $d' = 2 * d$. Then with the similar logic in the note, this map can't be placed in the listing. So it's uncountable. 
+	\end{proof}
+	
+	{\red
+	Some mistake here, we can't let the listing satisfy some certain property like I did to make the diagonal elements none-decreasing, but we need to construct from our side instead. \\
+	For example, here we can def f(i) is $max\{f_0(0), \dots, f_i(i)\} + 1$. It's still different functions and the property is successfully constructed. 
+	}
+	
+	\part Uncountable. 
+	\begin{proof}
+	Proof by contradiction.
+	
+	Say it's countable, then we can enumerate them where number in the diagonal are non-increasing\\
+	\begin{tabular}{ c|c| } 
+	f & f(0) f(1) \dots \\\hline
+	g & g(0) g(1) \dots \\\hline
+	\vdots & \vdots
+	\end{tabular}\\
+	Then we can define a new map from the Diagonalization by modifying each number d to make $d' = \lfloor d/2 \rfloor$. Then with the similar logic in the note, this map can't be placed in the listing. So it's uncountable. 
+	\end{proof}
+	
+	{\red
+	Mistake here: f(0), f(1), \dots are not infinite. Because it's none-increasing, there must be some finite steps K that make f(K) = 0, which is the destination of the natural number! Thus we can use this decreasing points to represent this function. And  $K \leq n$ if we let the subset D of f that D(0) = n, since at each decreasing step, it must at least decrease 1. Then since $N^n$ is countable, then D(n) is countable, which leads to the fact that the function f is $\cup _{i \in N}D(i)$ is countable from part (b). 
+	
+	Therefore, it's countable.}
+	
+	\part Uncountable. 
+	\begin{proof}
+	Proof by contradiction.
+	
+	Say it's countable, then we can enumerate them where number in the diagonal are also bijective functions\\
+	\begin{tabular}{ c|c| } 
+	f & f(0) f(1) \dots \\\hline
+	g & g(0) g(1) \dots \\\hline
+	\vdots & \vdots
+	\end{tabular}\\
+	Then we can define a new map from the Diagonalization by modifying each number d to make $d' = d + 1$. Then with the similar logic in the note, this map can't be placed in the listing. So it's uncountable. 
+	\end{proof}
+	
+	{\red 
+	Mistake here: the function we construct may not be bijection. {\bf Reason as before: we can't ask certain property in the diagonal direction.} 
+	
+	The rest proof is a little complicated, I just restate here in brief. For more concrete sol, go to see solution.
+	
+	Total idea: find a injective map from subset of N, aka power set of N to bijective function. For any subset S of Power-set(N) except $N\{X\}$,  we can let S set corresponding to identity function f(x) = x, while $\overline{S}$ to the function $g(x) = shuffle(x)$ where $x \neq g(x)$.
+	
+	Why S must exclude $N\{X\}$? Because $\overline{S} = \{X\}$, there is no shuffle function making $x \neq g(x)$.
+	}
+	
+	
+\end{parts}
+
+
+\section{Impossible Programs}
+\begin{parts}
+
+	\part can't exist.
+	
+	\begin{proof}
+	Proof by contradiction.
+	
+	Say such program exists, called TESTXY(P, x, y). Then we can use this program as subroutine to def Halt program, namely Halt(P, x).
+
+\begin{lstlisting}
+	Halt(P, x)
+	#def P' as: modify P to suppress exit 
+	#and return statements and append return y
+	If TESTXY(P', x, y): return True.
+	If not TESTXY(P', x, y): return False.
+\end{lstlisting}
+Therefore, if such TESTXY(P, x, y) exists, we can generate Halt problem, which we know doesn't exists. So TESTXY doesn't exists.
+\end{proof}
+
+	\part can't exist.
+	
+	\begin{proof}
+	Proof by contradiction.
+	
+	Say such program exists, called HALTFG(F, G, x). Then we can use this program as subroutine to def Halt program, namely Halt(P, x).
+
+\begin{lstlisting}
+	Halt(P, x)
+	If HALTFG(P, P, x): return True.
+	If not HALTFG(P, P, x): return False.
+\end{lstlisting}
+Therefore, if such HALTFG(F, G, x) exists, we can generate Halt problem, which we know doesn't exists. So such program like HALTFG doesn't exists.
+\end{proof} 
+
+\end{parts}
+
+\section{Undecided?[Most abstract one]}
+{\blue But I get it right!!!}\\
+This problem can be mapped as a 2-D graph, where $(l, j)$ denotes the state $c_j$ will be executed next by instruction $i_l$. And if we start at the origin, and go along all the points, it ultimately form a directed graph that each vertex can have at most 1 edge. \\
+\begin{parts}
+	
+	\part $n*k$.
+
+	\part We can view the graph without a circle as a tree. And since the biggest number of edge is $nk$, after $2n^2k^2$ steps, it will form a circle, and no longer be a tree.
+	
+	\part From part (b), we know if this algorithm is still running after $2n^2k^2$ iterations, it will loop forever. Therefore, we can just see the result after after $2n^2k^2$ iterations, if it does loop, then return Loop, Halt otherwise. 
+	
+	Don't contradict the undecidability of halting problem. Here a computer's state is finite, k is also finite, and thus make $2n^2k^2$ also a finite number. But in halting problem, n and k are infinite, which makes it undecided. 
+
+\end{parts}
+
+\section{Clothing Argument}
+\begin{parts}
+
+	\part $10^4$ outfits. Since by the first rule of counting, each time we have 10 choices, and we have 4 times to choose. 
+
+	\part ${4 \choose 2} \cdot 10^2 = 600$. Since each time we we have 10 choices, and we have ${4 \choose 2}$(to determine two catagories) times to choose. 
+	
+	\part 10*9*8*7 = 5040. Since first we have 10 choices, then since first one is picked, we are left with 9, etc.
+	
+	\part ${10 \choose 4}$ possibilities. From part c, we have a map from 4! to 1, since 4! is permutation of 4 different hats, which leads to the equation  
+	$$
+	{10 \choose 4} = \frac{10!}{6! \cdot 4!}
+	$$
+
+	\part This is the situation where sampling with replacement for the number of  hat of each color is greater than 3 and order does not matter. Here $n = 3, k = 3$, answer is ${5 \choose 3} = 10$. 
+	
+	More concretely, there are 3 stars and 2 bars and we assume stars before the 1st bar is red, 2nd is green, behind 2nd is turquoise. 
+\end{parts}
+
+
+
+
+
+\end{document}

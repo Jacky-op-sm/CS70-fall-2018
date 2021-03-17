@@ -1,0 +1,110 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{{./Picture/}}
+
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 HW 11}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Random Cuckoo Hashing}
+\begin{parts}
+
+	\part Pr(no collisions over the entire process) = $$
+	{n \over n} \cdot {n-1 \over n} \dots {1 \over n} = {n! \over n^n}.
+	$$
+	When n gets very large, it tends toward 0.
+
+	\part For $D_n$, we have two cases:
+	No collision with prob ${1 \over n}$. Collision with prob $1 - {1 \over n}$.\\
+	Thus applying the law of total Expectation, we have 
+	\begin{align*} 
+	E(X) &= {1 \over n} \times E(0) + (1 - {1 \over n}) \times (1 + E(X)) \\
+	&= 1 - {1 \over n} + E(X) - {1 \over n}E(X) \\
+	{1 \over n}E(X) &= 1 - {1 \over n} \\
+	E(X) &= n - 1
+	\end{align*}
+
+\end{parts}
+
+\section{Markov’s Inequality and  Chebyshev's                   Inequality}
+	var(X) = 9, E(X) = 2 and Pr(x > 10) = 0. Thus we can transform this R.V to Y where first subtract X by 10 and flip $(\times$ -1). Then we have var(Y) = 9, E(Y) = 8 and Pr(x > 0) = 1.
+\begin{parts}
+
+	\part True. 
+	
+	$E(X^2) - E(X)^2 = E(X^2) - 4 = 9 \implies E(X^2) = 13$.
+
+	\part True.
+	
+	By Markov's Inequality, $P(X \leq 1) = P(Y \ge 9) \leq {E(Y) \over 9} = {8 \over 9}$.
+	
+	\part Ture. 
+	
+	By Chebyshev's Inequality, $P(X \ge 6) = P(Y \leq 4) \leq P(\mid Y - 8 \mid \ge 4) \leq {var(Y) \over 4^2} = {9 \over 16}$.
+	
+	\part False.
+	
+	This R.V Y needn't to be symmetry, which may lead to $P(X \ge 6) > 9/32$. But I can't give a concrete counter-example.
+
+\end{parts}
+
+
+\section{Easy A’s}
+\begin{parts}
+
+	\part We define following events: S: total score; M: first Homework score; N: second Homework score; X: a distribution with mean $\mu = 5$ and variance $\sigma^2 = 1$. And we know N and M are independent and S = M + N, M = 3X, N = 4X. \\
+	Now we compute E(S) = E(M + N) = E(M) + E(N) = 3E(X) + 4E(X) = $7\mu$ = 35. Var(S) = Var(M + N) = Var(M) + Var(N) = 9Var(X) + 16Var(X) = $25\sigma^2$ = 25.
+
+	\part Still by Chebyshev's inequality, $Pr(S \ge 60) \leq Pr(|S - E(S)| \ge 25) \leq Var(S) / 25^2 = 25 / 25^2 = 0.04 = 4\%$.
+
+\end{parts}
+
+
+\section{Confidence Interval Introduction}
+\begin{parts}
+
+	\part $P(|X - \mu| \ge \varepsilon) \leq var(X) / \varepsilon^2 = {\sigma^2 \over \varepsilon^2}$.
+
+	\part $|X - \mu| \ge \varepsilon \Leftrightarrow -\varepsilon < X - \mu < \varepsilon \Leftrightarrow X - \varepsilon < \mu < X + \varepsilon$. Therefore, $Pr(|X - \mu| \ge \varepsilon) = Pr(X - \varepsilon < \mu < X + \varepsilon)$.
+	
+	\part We compute as following:
+	\begin{align*} 
+	P\{\mu \in (X - \varepsilon,X + \varepsilon)\} &= 1 - Pr(|X - \mu| \ge \varepsilon) \\
+	&\ge 1 - {\sigma^2 \over \varepsilon^2} \\ 	&\ge 0.95
+	\end{align*}
+	Then simplify the equation, we obtain
+	\begin{align*} 
+	{\sigma^2 \over \varepsilon^2} &\leq 0.05 \\
+	\varepsilon &\ge \sqrt{20}\cdot \sigma.
+	\end{align*}
+	
+	\part 
+	$E(\bar{X}) = E({1\over n}\cdot \sum_{i=1}^n E(X_i)) = {1\over n}\cdot n \cdot E(X_i) = \mu$. \\
+	$Var(\bar{X}) = Var({1\over n}\cdot \sum_{i=1}^n Var(X_i)) = ({1\over n})^2\cdot n \cdot Var(X_i) = {1\over n}\cdot \sigma^2$.
+	
+	\part Same as in part(c), we want 
+	\begin{align*} 
+	{Var(\bar{X}) \over \varepsilon^2} &\leq 0.05 \\
+	{\sigma^2 \over n \varepsilon^2}&\leq 0.05 \\
+	\varepsilon^2 &\ge 20 \cdot {\sigma^2 \over n} \\
+	\varepsilon &\ge \sqrt{20} \cdot {\sigma \over \sqrt{n}}
+	\end{align*}
+	So from the result, we can see $\varepsilon \to {1 \over \sqrt{n}}$, so as n gets large, $\varepsilon$ gets small.
+	
+
+\end{parts}
+
+
+\end{document}

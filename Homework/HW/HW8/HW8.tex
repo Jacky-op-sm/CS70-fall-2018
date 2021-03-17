@@ -1,0 +1,170 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{{./Picture/}}
+
+\newcommand{\blue}{\color{blue}}
+\newcommand{\red}{\color{red}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 HW8 }
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Counting, Counting, and More Counting}
+
+\begin{parts}
+
+	\part $2^n$ \\
+	{\red 
+	${n + k \choose k}$. Didn't see the existence of K.
+	}
+
+	\part $52 \choose 13$ \\
+	No aces: $48 \choose 13$ \\
+	Four aces: $48 \choose 9$ \\
+	6 spades: ${13 \choose 6} \cdot {39 \choose 7}$
+	
+	\part $\frac{104!}{2^{52}}$
+	
+	\part ${99 \choose 50} \cdot 2^{49}$ \\
+	{\red We haven't carefully consider the situation where my answer has repetition.\\
+	The answer shall be
+	$$
+	\sum _{i = 50} ^{99} {99 \choose i}.
+	$$
+	And we can simplify this equation, using $\sum _{i = 50} ^{99} {99 \choose i} = \sum _{i = 0} ^{49} {99 \choose i}$. Thus $2 * A = 2^{99} \implies A = 2^{98}$.
+	
+	Another smart way to view the problem, using symmetry, since the total number is odd, so the situation is rather there are more 1s than 0s or the reverse. The total number is $2^{99} \implies$ N(more 1s than 0s) = $2^{98}$
+	}
+	
+	\part FLORIDA: $7!$\\
+	ALASKA: $\frac{6!}{3!}$\\
+	ALABAMA: $\frac{7!}{4!}$\\
+	MONTANA: $\frac{7!}{2!2!}$
+	
+	\part (1) $5!$ (2) $6!/2$
+	
+	\part $27^9$
+	
+	\part $7^2$ \\
+	{\red 
+	Didn't see the balls are identical here. After distributing each bin a ball, we are left with 2. We have 6 bars, 6 + 2 = 8 stars. Therefore ${8 \choose 2}$
+	}
+	
+	\part $35 \choose 26$
+	
+	\part $\frac{20!}{2^{10}10!}$
+	
+	\part $n + k \choose k$
+	
+	\part $n - 3 \choose 1$ \\
+	{\red 
+	$n - 1 \choose 1$. \# of bars: 1. \# of stars: 1 + n - 2 = 1 + n.
+	}
+	
+	\part $n \choose k$ \\
+	{\red 
+	$n - 1 \choose k$. \# of bars: k. \# of stars: k  + n - k - 1 = n - 1.
+	}
+
+\end{parts}
+
+\section{Binomial Beads}
+\begin{parts}
+
+	\part $n \choose k$.
+
+	\part Value = $x^k \cdot y^{n-k}$.
+	
+	\part  $\sum_{k=0} ^n {n \choose k} x^k y^{n-k}$.
+	
+	\part Since in part (c), the form summation is exactly same as RHS of the equation. And the LHS is another way of counting total value. From this induction relation, 
+	\begin{align*} 
+	V(n+1) &= (x+y) V(n) \\
+	V(1) &= x + y
+	\end{align*}
+	Thus the answer is also $(x+y)^n$. 
+	So we can conclude the binomial theorem. 
+
+\end{parts}
+
+
+\section{Minesweeper}
+\begin{parts}
+
+	\part \begin{enumerate}[(i)]
+	
+		\item 10 mines, 54 not mines. Thus $10/(54+10) = \frac{5}{32}$.
+	
+		\item ${55 \choose 10} / {64 \choose 10}$.
+		\item ${8 \choose k}{55 \choose 10-k} / {64 \choose 10}$.
+		(Why 8 ? The one you pick is not a mine)
+	
+	\end{enumerate}
+
+	\part Pick near: $k/8$; Pick different one: $(10 - k) / 55$. \\
+	When this two equals, $63 k = 80$. Thus $k = 1.2xxx$. So when $k \leq 1$, picks near. When $n \ge 2$, pick different one.
+	
+	\part The possibility space for the first pick being number 1 : $\Omega = {8 \choose 1}{55 \choose 9}$. The possibility space of the event $|A| = 4 * {52 \choose 6}$. Thus $P(A) = 4 * {52 \choose 6}/ {8 \choose 1}{55 \choose 9}$. 
+
+\end{parts}
+
+\section{Playing Strategically}
+\begin{parts}
+
+	\part $P(E_1) = {1 \over 3} + {2 \over 3} * {1 \over 3} * {1 \over 3} + \dots = {1 \over 3} * [ 1 + {2 \over 9} + ({2 \over 9})^2 + \dots] = {1 \over 3} * {9 \over 7} = {3 \over 7}$;
+
+	\part $P(E_2) = 1/3 * P(E_1) = 1/7$;
+	
+	\part $E_3$: Bob against Carol with first shooting. \\
+	$E_4$: Bob against Carol with second shooting.
+	$P(E_3) = 1/3; P(E_4) = 0$;
+	
+	\part Now we wanna show that for Eve: he will shoot Carol before Bob: Since in dual, he has bigger possibility to win, besides, if he shoots Bob and succeed, he will definitely lose. And for Carol: shoot  Eve before Bob, which is obvious Eve has stronger shooting skill than Bob.
+	
+	Once we have these two facts, now we compute Bob winning rate with following events:
+	\begin{enumerate}[1.]
+	
+		\item Bob shoots Eve: $P(W_1) = 1/3 * 0 + 2/3 * P(W)$, where $P(W)$ is the winning rate as same as shooting air.
+	
+		\item Bob shoots Carol: $P(W_2) = 1/3 * 1/7 + 2/3 * P(W)$, where $P(W)$ is the winning rate as same as shooting air.
+		
+		\item Bob shoots air: now we compute $P(W)$. Since Eve will shoot Carol, with 2/3 possibility that it will become $E_1$; 1/3 possibility that it will become $E_3$, since Eve will be shot by Carol next. $P(W) = 2/7 + 1/9 = 25/63$. Now we compare winning rate, $P(W_1) < P(W)$ is obvious, $P(W_2) = 1/21 + 2/3 * P(W) = 59 / 189 < 26 / 63$.
+	
+	\end{enumerate}
+	
+	Therefore, with above analysis, Bob better shoots air. 
+
+\end{parts}
+
+\section{Weathermen}
+Since this question I draw a tree and I don't know how to rep it in LaTex. Therefore I just post here.
+\begin{figure}[H]
+   \centering
+   \includegraphics[
+  width = 0.55\textwidth]{Question 5.jpg}    	\caption{Handwriting of Question 5}
+   \label{fig:example}
+\end{figure}
+
+{\red 
+The solution doesn't care you know the weather condition or not. But there must be some intuition behind it, since it's called PARADOX. 
+\begin{figure}[H]
+   \centering
+   \includegraphics[
+  width = 1\textwidth]{d.png} % requires the graphicx package
+   \caption{}
+   \label{fig:example}
+\end{figure}
+}
+
+
+
+
+\end{document}

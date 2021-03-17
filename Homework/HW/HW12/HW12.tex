@@ -1,0 +1,191 @@
+\documentclass[12pt]{exam}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{{./Picture/}}
+
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\setlength{\parindent}{0pt}
+\title{CS70 HW 12}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Safeway Monopoly Cards}
+\begin{parts}
+
+	\part I have no idea about the solution this question. The hint must be something about Collector Coupon Problem and the Expectation and Variance of Geometric(p). But i can't see the connection. 
+	
+	{\blue 
+	\begin{align*} 
+	Var(X) &= Var(\sum _{i=1}^n X_i) \\
+	&= \sum _{i=1}^n Var(X_i) & independence \\
+	&= \sum _{i=1}^n {1 - {n - i+1 \over n} \over ({n-i+1 \over n})^2} & p = {n-i+1 \over n} \\
+	&= \sum _{j=1}^n {1-j/n \over (j/n)^2} & n-i+1 = n \to 1\\
+	&= \sum _{j=1}^n {n9n-j) \over j^2} \\
+	&= \sum _{j=1}^n n^2j^{-2} - n\sum _{j=1}^n i^{-1} \\
+	&= n^2 \sum _{j=1}^n j^{-2} - E(X)
+	\end{align*}
+	}
+	
+\end{parts}
+
+
+\section{Geometric Distribution}
+\begin{parts}
+
+	\part From the description, we can infer that $X = X_1 \cup X_2$. Thus $P(X = 1) = P(X_1 = 1 \cap X_2 = 1) = P(X_1 = 1) + P(X_2 = 1) - P(X_1 = 1\cap X_2 = 1) = p_1 + p_2 - p_1p_2$. Therefore, it's also a geometric distribution with parameter $p' = p_1 + p_2 - p_1p_2$.
+	
+	{\red It seems that it's not that simple. We should consider this problem more carefully. And $X \neq X_1 \cup X_2$ but $X = min\{X_1, X_2\}$.
+	
+	Here the best way to solve this is that to show the tail probability is Geometric Contribution. 
+	\begin{align*} 
+	Pr(X \ge k) &= Pr(min\{X_1, X_2\} \ge k) \\
+	&= Pr(X_1 \ge k \cap X_2 \ge k) \\
+	&= (1 - p_1)^{k-1} * (1 - p_2)^{k-1} \\
+	&= (1 - (p_1 + p_2 - p_1p_2))^{k-1}
+	\end{align*}
+	Thus $p' = p_1 + p_2 - p_1p_2$.
+	}
+
+	\part From the distribution of X, we can know that the probability for the first person to find is that
+	$$
+	\sum_{i=0} ^{\infty} (1 - p')^{2i} \cdot p' = {p' \over 1 - (1 - p')^2}
+	$$
+	where $p' = p_1 + p_2 - p_1p_2$.
+
+\end{parts}
+
+
+\section{Geometric and Poisson}
+\begin{parts}
+
+	\part 
+	\begin{align*} 
+	Pr(X > Y) &= \sum _{x = 1} ^{\infty} \sum _{y = 0} ^{x-1} {\lambda^y \over y!}e^{-\lambda} \cdot (1-p)^{x-1}p \\
+	&= \sum _{y = 0} ^{\infty} \sum _{x = y + 1} ^{\infty} {\lambda^y \over y!}e^{-\lambda} \cdot (1-p)^{x-1}p \\
+	&= \sum _{y = 0} ^{\infty} {\lambda^y \over y!}e^{-\lambda} \cdot \sum _{x = y + 1} ^{\infty} (1-p)^{x-1}p \\
+	&= \sum _{y = 0} ^{\infty} {\lambda^y \over y!}e^{-\lambda} \cdot (1 - p)^y \\
+	&= { \sum _{y = 0} ^{\infty} {[\lambda(1-p)]^y \over y!}e^{-\lambda(1-p)} \over e^{1-p}} \\
+	&= {1 \over e^{1-p}} 
+	= e^{p-1}.
+	\end{align*}
+	
+	{\red We are almost right, but a simple mistake here. The last two steps, it should be  \begin{align*} 
+	Pr(X > Y) &= { \sum _{y = 0} ^{\infty} {[\lambda(1-p)]^y \over y!}e^{-\lambda(1-p)} \over e^{p}} \\
+	&= {1 \over e^{\lambda p}} 
+	= e^{-\lambda p}
+	\end{align*}
+	}
+	
+	
+	\part Since $max\{X, Y\} \ge X$, we infer that $P(max\{X, Y\} \ge X) = 1$.
+	
+	\part Since $max\{X, Y\} \ge Y$ and now we want $max\{X, Y\} \leq Y$, we can infer that $max\{X, Y\} = Y$, which is same as $P(X \leq Y) = 1 - P(X > Y) = 1 - e^{p-1}$.
+	
+	{\red Because of part(a), the right answer shall be $1 - e^{-\lambda p}$.
+	}
+
+\end{parts}
+
+\section{Darts}
+\begin{parts}
+
+	\part $f_X(x) = exp(-x)$. First we check that the integral is 1.
+	$$
+	\int_{0}^{\infty} e^{-x} \,dx = {e^{-x} \over -1}\bigg\vert_{x=0}^{x=\infty} = 1
+	$$
+	Then Pr(dart will stay within the board) = $$
+	\int_{0}^{4} e^{-x} \,dx = {e^{-x} \over -1}\bigg\vert_{x=0}^{x=4} = 1 - e^{-4}.
+	$$
+
+	\part Pr(within 1 unit $\mid$ within 4 unit) = ${\text{Pr(within 1 unit)} \over \text{P(within 4 unit)}}$ = 
+	$$
+	{\int_{0}^{1} e^{-x} \,dx \over \int_{0}^{4} e^{-x} \,dx} = {1 - e^{-1} \over {1 - e^{-4}}}
+	$$
+	
+	\part 
+	Pr(Score) = 
+	$$
+	\begin{cases}
+	1 - e^{-1} & 0 \leq x \leq 1, S = 4 \\
+	e^{-1} - e^{-2} & 1 \leq x \leq 2, S = 3 \\
+	e^{-2} - e^{-3} & 2 \leq x \leq 3, S = 2 \\
+	e^{-3} - e^{-4} & 3 \leq x \leq 4, S = 1 \\
+	\end{cases}
+	$$
+	Thus we have the E(S) = 
+	$$
+	4(1 - e^{-1}) + 3(e^{-1} - e^{-2}) + 2(e^{-2} - e^{-3}) + 1(e^{-3} - e^{-4}) = 4 - \sum_{i=1}^4 e^{-i}
+	$$
+
+\end{parts}
+
+\section{Exponential Practice}
+\begin{parts}
+	
+	\part 
+	We can compute as following:
+	\begin{align*} 
+	F_Y(y) &= \int_{0}^{y} \int_{0}^{c-x_1} \lambda e^{-\lambda x_1} \lambda e^{-\lambda x_2} \,dx_1 \,dx_2  \\
+	&= \int_{0}^{y}e^{-\lambda x_1} \cdot \int_{0}^{c-x_1}\lambda e^{-\lambda x_2}\,dx_2 \,dx_1 \\
+	&= \int_{0}^{y}e^{-\lambda x_1} \cdot {e^{-\lambda x_2} \over -\lambda}\bigg\vert_0^{c-x_1} \,dx_1 \\
+	&= \int_{0}^{y}e^{-\lambda x_1} \cdot (1 - e^{-\lambda(c-x_1)})\,dx_1 \\
+	&=\int_{0}^{y}e^{-\lambda x_1}\,dx_1 - \int_{0}^{y} \lambda e^{-\lambda y}\,dx_1 \\
+	&= 1 - e^{-\lambda y} - \lambda y e^{-\lambda y}
+	\end{align*}
+	Then differentiate it, we obtain 
+	\begin{align*} 
+	f_Y(y) &= \lambda e^{-\lambda y} - [\lambda e^{-\lambda y} - \lambda^2 y e^{-\lambda y}] \\
+	&= \lambda^2 y e^{-\lambda y}
+	\end{align*}
+	
+	\part 
+	\begin{align*} 
+	{Pr(X_1 \leq x \,\cap \,x_1+x_2=t) \over Pr(x_1+x_2=t)} &= {\text{Same as part(a)} \over f_T(t)\,dt} \\
+	&= { 1 - e^{-\lambda x} - \lambda x e^{-\lambda x} \over \lambda^2 t e^{-\lambda t} \, dt} \\
+	&= {\text{I don't know the next}}\\
+	&= {\text{now maybe I know}}\\
+	&= {\text{this is wrong}}
+	\end{align*}
+	\begin{align*} 
+	{Pr(X_1 \leq x \,\cap \,x_1+x_2=t) \over Pr(x_1+x_2=t)} &= {\int_0^x \lambda^2 t e^{-\lambda t}\,dt\,dx \over \int_0^t \lambda^2 t e^{-\lambda t}\,dt\,dx} \\
+	&= {x \lambda^2 t e^{-\lambda t}\,dt\ \over t\lambda^2 t e^{-\lambda t}\,dt} \\
+	&= { x \over t}
+	\end{align*}
+	Therefore, pdf of $X_1$ conditioned on $X_1 + X_2 = t$ is ${ 1 \over t}$.
+\end{parts}
+
+\section{Uniform Means}
+\begin{parts}
+
+	\part By tail sum formula, $E(X) = \int_0^{\infty}P(X>x)\,dx$, we have
+	\begin{align*} 
+	E(Y) &= \int_0^{\infty}P(Y>y)\,dy \\
+	&= \int_0^{1}P(Y>y)\,dy \\
+	&= \int_0^{1}({1-y \over 1})^n \,dy \\
+	&= - \int_0^{1}({1-y \over y})^n \,d(1-y) \\
+	&= - {(1 - y)^{n+1} \over n+1} \bigg\vert ^1 _0 \\
+	&= {1 \over n+1}
+	\end{align*}
+
+	\part Find the CDF, $F_Z(z) = Pr(Z \leq z) = ({z \over 1})^n = z^n$. Therefore, $f_Z(z) = n \cdot z^{n-1}$. 
+	\begin{align*} 
+	E(Z) &= \int_0^{1} z n \cdot z^{n-1} \,dz \\
+	&= n \cdot \int_0^{1} z^{n} \,dz \\
+	&= n \cdot {z^{n+1} \over n+1} \bigg\vert ^1 _0 \\
+	&= {n \over n+1}
+	\end{align*}
+
+\end{parts}
+
+
+
+\end{document}
